@@ -11,6 +11,8 @@ import getpass
 import sys
 from pprint import pprint
 
+numbers = 0;
+
 def call_api(method, params, token):
     if isinstance(params, list):
         params_list = [kv for kv in params]
@@ -39,36 +41,37 @@ def get_photos_urls(user_id, album_id, token):
         result.append(url)
     return result
 
-def save_photos(urls, directory):
-    if not os.path.exists(directory):
-        os.mkdir(directory)
+def save_photos(urls, album, directory):
+    if not os.path.exists(str(directory)):
+        os.mkdir(str(directory))
     names_pattern = "%%0%dd.jpg" % len(str(len(urls)))
+    global numbers;
     for num, url in enumerate(urls):
-        filename = os.path.join(directory, names_pattern % (num + 1))
+        filename = os.path.join(str(directory), str(album) + '_' + names_pattern % (num + 1))
         print "Downloading %s" % filename
         open(filename, "w").write(urllib2.urlopen(url).read())
+        numbers = numbers + 1
+        if (numbers == 10) :
+			return;
 
-def save_on_disk(albums):
-	print "\n".join("%d. %s" % (num + 1, album["title"]) for num, album in enumerate(albums))
+def save_on_disk(albums, user_id):
 	choise = -1
+	count = 0
+	global numbers
 	while choise not in xrange(len(albums)):
-		choise = int(raw_input("Choose album number: ")) - 1
-	photos_urls = get_photos_urls(user_id, albums[choise]["aid"], token)
-	save_photos(photos_urls, directory)
-
-if len(sys.argv) != 2:
-   print "Usage: %s destination" % sys.argv[0]
-   sys.exit(1)
-
-directory = sys.argv[1]
+		count = count + 1
+		photos_urls = get_photos_urls(user_id, albums[choise]["aid"], token)
+		save_photos(photos_urls, count, user_id)
+		if (numbers == 10) :
+			return;
 email = raw_input("Email: ")
 password = getpass.getpass()
-#email = ''
-#password = ''
+email = ''
+password = ''
 token, user_id = vk_auth.auth(email, password, "2951857", "photos")
-#user_id = 
+user_id = 20020126
 
 #res = search.search_people()
 
 albums = get_albums(user_id, token)
-save_on_disk(albums)
+save_on_disk(albums, user_id)
