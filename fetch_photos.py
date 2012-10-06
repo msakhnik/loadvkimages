@@ -61,16 +61,14 @@ if len(sys.argv) != 2:
    sys.exit(1)
 
 directory = sys.argv[1]
-#email = raw_input("Email: ")
-#password = getpass.getpass()
-email = ''
-password = ''
+email = raw_input("Email: ")
+password = getpass.getpass()
+#email = ''
+#password = ''
 token, user_id = vk_auth.auth(email, password, "2951857", "photos")
+#user_id = 
 
-res = search.search_people()
+#res = search.search_people()
 
-print res
-#user_id = 153174556;
-
-#albums = get_albums(user_id, token)
-#save_on_disk(albums)
+albums = get_albums(user_id, token)
+save_on_disk(albums)

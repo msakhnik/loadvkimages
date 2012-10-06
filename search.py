@@ -5,7 +5,7 @@ import re
 
 def search_people():
 	g = Grab()
-	g.setup(post={'al': '1', 'c[age_from]': '21', 'c[name]': '1', 'c[section]': 'people', 'c[sex]': '1'})	
+	g.setup(post={'al': '1', 'c[age_from]': '21', 'c[name]': 'Lutsk', 'c[section]': 'people', 'c[sex]': '1'})	
 	try:
 		g.go('http://vk.com/al_search.php')
 		response = str(g.response.body)
