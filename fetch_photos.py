@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*- 
 import vk_auth
+import search
 import json
 import urllib2
 from urllib import urlencode
@@ -7,6 +9,7 @@ import os
 import os.path
 import getpass
 import sys
+from pprint import pprint
 
 def call_api(method, params, token):
     if isinstance(params, list):
@@ -53,27 +56,20 @@ def save_on_disk(albums):
 	photos_urls = get_photos_urls(user_id, albums[choise]["aid"], token)
 	save_photos(photos_urls, directory)
 
-def get_users(user_id, token):
-	call_api("users.get", ("uid", user_id), token)
-
 if len(sys.argv) != 2:
    print "Usage: %s destination" % sys.argv[0]
    sys.exit(1)
 
 directory = sys.argv[1]
-email = raw_input("Email: ")
-password = getpass.getpass()
+#email = raw_input("Email: ")
+#password = getpass.getpass()
+email = ''
+password = ''
 token, user_id = vk_auth.auth(email, password, "2951857", "photos")
-print user_id;
-print token;
-users = [1, 2]
-users = get_users(user_id, token);
-print users;
-if users :
-	i = 0;
-	print len(users)
-else :
-	print "No"
+
+res = search.search_people()
+
+print res
 #user_id = 153174556;
 
 #albums = get_albums(user_id, token)
